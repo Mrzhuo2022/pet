@@ -26,3 +26,8 @@ dist-ssr
 
 # ZCode 会话数据（计划文档等，机器本地）
 .zcode/
+
+# 模型/素材类内置皮肤不入库（版权素材；本地保留，内置索引只列史莱姆）
+public/petskins/hiyori/
+public/petskins/panda/
+scripts/assets/

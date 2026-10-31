@@ -1340,12 +1340,12 @@ mod tests {
     }
 
     #[test]
-    fn builtin_packs_include_panda() {
+    fn builtin_packs_include_slime() {
+        // 仓库内只内置代码生成的史莱姆（模型素材类皮肤不入库，本地另配）
         let packs = builtin_packs();
         assert!(packs
             .iter()
-            .any(|(id, name)| id == "panda.incense" && name == "上香熊猫"));
-        assert!(packs.iter().any(|(id, _)| id == "hiyori.live2d"));
+            .any(|(id, name)| id == "slime.pixel" && name == "像素史莱姆"));
     }
 
     #[test]

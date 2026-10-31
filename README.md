@@ -39,11 +39,13 @@ pnpm tauri build    # 打包 NSIS 安装包
 - [x] 引擎适配层 `PetEngine` 接口：load / layout / play / focus / destroy，行为层与渲染引擎解耦
 - [x] Live2D 引擎（.moc3）与精灵图引擎（sheet.png 网格切帧 + 可选 parts 分层）双引擎
 - [x] 精灵图可选 `sprite.parts` 分层：部件复用主表动作帧，缩略图/编辑器合成预览
-- [x] 内置皮肤包（`public/petskins/`）+ 用户皮肤包（`%APPDATA%/com.evarle.pet/petskins/`，asset 协议加载）
+- [x] 内置皮肤包（`public/petskins/`，仓库内仅版权干净的史莱姆；模型素材类皮肤放同目录即自动启用）
+- [x] 用户皮肤包（`%APPDATA%/com.evarle.pet/petskins/`，asset 协议加载）
 - [x] 托盘 → 皮肤管理窗口：皮肤列表 / 切换（热重载，桌宠窗口不重启）/ ZIP 导入 / 删除
 - [x] 激活皮肤持久化（`settings.json`）
-- [x] 内置示例：Hiyori（Live2D）、像素史莱姆（精灵图，`scripts/gen-slime.mjs` 生成）、
-      上香熊猫（分层精灵图：身体 + 独立香束，点击躬身拜香，`scripts/gen-panda.mjs` 生成）
+- [x] 内置示例：像素史莱姆（精灵图，`scripts/gen-slime.mjs` 生成，仓库内唯一内置皮肤——
+      模型/素材类皮肤因版权不入库）；Hiyori（Live2D 官方示例）与上香熊猫
+      （分层精灵图，`scripts/gen-panda.mjs` 生成）放到 `public/petskins/` 即自动启用
 
 ### petpack 规范速览
 
@@ -255,10 +257,10 @@ src/                 前端
   BubbleApp.vue      气泡窗口（多桌宠共享）
   CtxMenuApp.vue     桌宠右键菜单窗口
 src-tauri/           Rust 壳：多桌宠窗口/托盘/皮肤包命令（petpack.rs）/hit_context
-public/petskins/     内置皮肤包（hiyori / slime / panda）
+public/petskins/     内置皮肤包（仓库内仅 slime；hiyori/panda 本地放置，不入库）
 public/live2dcubismcore/  Cubism Core 运行时
 scripts/gen-slime.mjs      史莱姆 sheet.png 生成器（纯 Node）
-scripts/gen-panda.mjs      上香熊猫生成器（分层身体/香束 + 精灵图/铃音，纯 Node）
+scripts/gen-panda.mjs      上香熊猫生成器（需本地 scripts/assets/ 素材，不入库）
 tests/                    前端数据层冒烟测试（Node test runner）
 ```
 
