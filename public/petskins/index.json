@@ -1,0 +1,22 @@
+{
+  "packs": [
+    {
+      "id": "hiyori.live2d",
+      "dir": "hiyori",
+      "name": "Hiyori（Live2D 官方示例）",
+      "engine": "live2d"
+    },
+    {
+      "id": "slime.pixel",
+      "dir": "slime",
+      "name": "像素史莱姆",
+      "engine": "sprite"
+    },
+    {
+      "id": "panda.incense",
+      "dir": "panda",
+      "name": "上香熊猫",
+      "engine": "sprite"
+    }
+  ]
+}

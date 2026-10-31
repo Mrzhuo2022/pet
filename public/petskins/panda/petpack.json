@@ -1,0 +1,114 @@
+{
+  "id": "panda.incense",
+  "name": "上香熊猫",
+  "version": "1.0.0",
+  "author": "pet",
+  "engine": "sprite",
+  "displayScale": 0.65,
+  "sprite": {
+    "sheet": "body-sheet.png",
+    "frameW": 608,
+    "frameH": 832,
+    "cols": 6,
+    "parts": [
+      {
+        "sheet": "incense-sheet.png",
+        "frameW": 265,
+        "frameH": 528,
+        "cols": 6,
+        "offsetX": 166,
+        "offsetY": 37
+      }
+    ]
+  },
+  "animations": {
+    "idle": {
+      "frames": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "fps": 6,
+      "loop": true
+    },
+    "walk": {
+      "frames": [
+        6,
+        7,
+        8
+      ],
+      "fps": 7,
+      "loop": true
+    },
+    "drag": {
+      "frames": [
+        9,
+        10
+      ],
+      "fps": 4,
+      "loop": true
+    },
+    "click": {
+      "frames": [
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "fps": 7,
+      "loop": true
+    },
+    "thinking": {
+      "frames": [
+        16,
+        17
+      ],
+      "fps": 3,
+      "loop": true
+    },
+    "speaking": {
+      "frames": [
+        18,
+        19
+      ],
+      "fps": 5,
+      "loop": true
+    },
+    "done": {
+      "frames": [
+        20,
+        21
+      ],
+      "fps": 5,
+      "loop": true
+    },
+    "failed": {
+      "frames": [
+        22,
+        23
+      ],
+      "fps": 4,
+      "loop": true
+    }
+  },
+  "interactions": {
+    "clickSounds": [
+      "sounds/bell.wav"
+    ],
+    "clickTexts": [
+      "心诚则灵",
+      "保佑保佑",
+      "再拜一下",
+      "香火不能断",
+      "许个愿吧",
+      "烟往天上飘，愿往心里去"
+    ]
+  },
+  "persona": {
+    "prompt": "你是一只见证人间心愿的上香熊猫。你说话温和佛系、带点反差幽默，喜欢用\"心诚则灵\"安慰人，偶尔吐槽人类的愿望太多。"
+  }
+}
