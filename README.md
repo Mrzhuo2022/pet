@@ -39,13 +39,14 @@ pnpm tauri build    # 打包 NSIS 安装包
 - [x] 引擎适配层 `PetEngine` 接口：load / layout / play / focus / destroy，行为层与渲染引擎解耦
 - [x] Live2D 引擎（.moc3）与精灵图引擎（sheet.png 网格切帧 + 可选 parts 分层）双引擎
 - [x] 精灵图可选 `sprite.parts` 分层：部件复用主表动作帧，缩略图/编辑器合成预览
-- [x] 内置皮肤包（`public/petskins/`，仓库内仅版权干净的史莱姆；模型素材类皮肤放同目录即自动启用）
+- [x] 内置皮肤包（`public/petskins/`，仓库内仅版权干净的史莱姆；模型素材类皮肤走用户包导入）
 - [x] 用户皮肤包（`%APPDATA%/com.evarle.pet/petskins/`，asset 协议加载）
 - [x] 托盘 → 皮肤管理窗口：皮肤列表 / 切换（热重载，桌宠窗口不重启）/ ZIP 导入 / 删除
 - [x] 激活皮肤持久化（`settings.json`）
 - [x] 内置示例：像素史莱姆（精灵图，`scripts/gen-slime.mjs` 生成，仓库内唯一内置皮肤——
       模型/素材类皮肤因版权不入库）；Hiyori（Live2D 官方示例）与上香熊猫
-      （分层精灵图，`scripts/gen-panda.mjs` 生成）放到 `public/petskins/` 即自动启用
+      （分层精灵图）通过皮肤管理窗口导入为用户包，或直接放到
+      `%APPDATA%/com.evarle.pet/petskins/`（目录名即包 id）
 
 ### petpack 规范速览
 
@@ -222,16 +223,36 @@ cargo test --manifest-path src-tauri/Cargo.toml --lib   # 设置解析/迁移/�
 ```
 
 - 覆盖：旧版单宠设置迁移、原子写不残留 tmp、pet id 分配、内置皮肤索引、
-  parts 清单校验、设置缺省/越界修复、asset URL 拼接。
+  parts 清单校验、设置缺省/越界修复、asset URL 拼接、
+  SSE 流式解析（粘包/半行/CRLF）、聊天 SQLite CRUD/级联删除、气泡切句。
 - CI：`.github/workflows/ci.yml`（Ubuntu 上 `pnpm build` + `pnpm test`；
   Windows 上构建前端后跑 `cargo test --lib`，因为 Tauri 编译期需要 dist）。
 
+**阶段 3：AI 聊天 ✅**
+
+- [x] **LLM 聊天（OpenAI 兼容 API）**：设置 → 全局设置 → AI 对话，配置
+      API 地址 / 模型 / API key（常用服务一键填入；本地 Ollama 也走 /v1 兼容端点），
+      「测试连接」一键验证；API key 存 Windows 凭据管理器，不落设置文件
+- [x] **聊天窗口**：托盘/右键桌宠「和它聊天」打开；流式打字机、markdown 渲染
+      （代码块高亮底色）、会话历史（SQLite 按桌宠分库保存、可回看/删除）、
+      生成中可停止；回复期间桌宠播 thinking/speaking 动画
+- [x] **人设随皮肤**：皮肤包 `persona.prompt`（皮肤编辑器可改）注入 system prompt，
+      换皮肤 = 换性格
+- [x] **对话记忆**：SQLite（appData/chat.db，WAL）按桌宠分会话存储，
+      可配置携带的历史轮数
+- [x] **口型同步**：Live2D `ParamMouthOpenY` 逐帧注入——流式期间按吐字节奏
+      开合（假同步）；开启 TTS 后播放合成语音并由音频频谱驱动口型（真同步）
+- [x] **气泡联动**：流式回复按句读切句，桌宠头顶气泡逐句滑窗显示
+      （全文在聊天窗口看）
+- [x] **TTS 朗读（可选）**：OpenAI 兼容 `/v1/audio/speech` 合成回复语音，
+      markdown 记号剥除后再念；失败静默降级纯文字
+- [x] 每宠「AI 对话」开关（设置 → 桌宠 → 互动）；同一只桌宠同一时间只回复一条
+
 ## 路线图
 
-- [ ] 阶段 3：LLM 聊天（流式气泡 + 口型同步 + 人设随皮肤 + SQLite 记忆）
-- [ ] 阶段 4：Agent 网关（Node 侧车：`POST /api/notify`、任务队列、
-      Claude Code CLI 适配器、任务状态联动桌宠动画）
-- [ ] 阶段 5：自启、全局热键、多显示器、性能验收（内存<100MB、闲置CPU<1%）
+- [ ] 阶段 4：Agent 网关（进程内 HTTP 通知 API `POST /api/notify`、任务队列、
+      Claude Code CLI 适配器、聊天意图路由派活、任务状态联动桌宠动画）
+- [ ] 阶段 5：全局热键、性能验收与拆包优化、设置备份/恢复、文档与 v0.2.0
 
 ## 目录结构
 
@@ -248,15 +269,19 @@ src/                 前端
   pet/ground.ts      任务栏贴地计算
   pet/voiceBus.ts    窗口内语音互斥闸
   pet/motionText.ts  动作台词/语音配对（解包模型 Text/TextDuration）
+  pet/chatBubble.ts  聊天流式回复切句（气泡滑窗，纯函数）
   pet/packSummary.ts 皮肤包只读摘要（详情面板）
   pet/manifestDiff.ts 编辑器保存改动清单
   pet/cover.ts       皮肤封面离屏渲染与缓存
   PetApp.vue         桌宠主窗口
+  ChatApp.vue        聊天窗口（流式/markdown/会话历史，异步加载不带 PIXI）
   SettingsApp.vue    设置窗口（桌宠管理/全局设置/皮肤库/关于）
   PackEditor.vue     皮肤编辑器（预览/绑定/换装/文案/人设）
   BubbleApp.vue      气泡窗口（多桌宠共享）
   CtxMenuApp.vue     桌宠右键菜单窗口
 src-tauri/           Rust 壳：多桌宠窗口/托盘/皮肤包命令（petpack.rs）/hit_context
+  ├ llm.rs           LLM 客户端（OpenAI 兼容流式 SSE）+ keyring 密钥 + TTS
+  └ chat.rs          聊天记忆（SQLite 会话/消息）
 public/petskins/     内置皮肤包（仓库内仅 slime；hiyori/panda 本地放置，不入库）
 public/live2dcubismcore/  Cubism Core 运行时
 scripts/gen-slime.mjs      史莱姆 sheet.png 生成器（纯 Node）
