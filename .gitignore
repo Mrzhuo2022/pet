@@ -1,0 +1,33 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.tmp
+
+# ZCode 会话数据（计划文档等，机器本地）
+.zcode/
+
+# 模型/素材类内置皮肤不入库（版权素材；本地保留，内置索引只列史莱姆）
+public/petskins/hiyori/
+public/petskins/panda/
+scripts/assets/

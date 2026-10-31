@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pet</title>
+    <style>
+      html,
+      body,
+      #app {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: transparent;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <!-- Cubism Core 运行时必须在前端模块加载前就绪（已本地 vendor，离线可用） -->
+    <script src="/live2dcubismcore/live2dcubismcore.min.js"></script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

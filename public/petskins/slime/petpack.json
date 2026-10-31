@@ -1,0 +1,30 @@
+{
+  "id": "slime.pixel",
+  "name": "像素史莱姆",
+  "version": "1.1.0",
+  "author": "pet",
+  "engine": "sprite",
+  "sprite": {
+    "sheet": "sheet.png",
+    "frameW": 64,
+    "frameH": 64,
+    "cols": 4
+  },
+  "animations": {
+    "idle": { "frames": [0, 1, 2, 1, 0, 1, 3, 1], "fps": 5, "loop": true },
+    "walk": { "frames": [1, 2], "fps": 8, "loop": true },
+    "drag": { "frames": [5], "fps": 1, "loop": true },
+    "click": { "frames": [4], "fps": 1, "loop": true, "back": "idle" },
+    "thinking": { "frames": [7], "fps": 1, "loop": true },
+    "speaking": { "frames": [0, 3], "fps": 6, "loop": true },
+    "done": { "frames": [6], "fps": 1, "loop": true },
+    "failed": { "frames": [7], "fps": 1, "loop": true }
+  },
+  "interactions": {
+    "clickSounds": ["sounds/pop.wav"],
+    "clickTexts": ["咕噜噜？", "别戳啦！", "(·ω·)", "QwQ", "再戳就扁了"]
+  },
+  "persona": {
+    "prompt": "你是一只软乎乎的像素史莱姆，说话简短可爱，偶尔用'咕噜噜'开头。"
+  }
+}

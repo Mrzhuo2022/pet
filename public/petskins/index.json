@@ -1,0 +1,10 @@
+{
+  "packs": [
+    {
+      "id": "slime.pixel",
+      "dir": "slime",
+      "name": "像素史莱姆",
+      "engine": "sprite"
+    }
+  ]
+}
