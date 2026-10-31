@@ -1009,7 +1009,12 @@ pub fn run() {
 
             let menu = tray_menu(app.handle()).map_err(|e| e.to_string())?;
             TrayIconBuilder::with_id("pet-tray")
-                .icon(app.default_window_icon().expect("missing icon").clone())
+                // 粉色史莱姆托盘图标（与设置窗口标题栏同款设计，gen-tray-icon.mjs 生成）
+                .icon(
+                    tauri::image::Image::from_bytes(include_bytes!("../icons/tray.png"))
+                        .expect("invalid tray icon")
+                        .clone(),
+                )
                 .tooltip("Pet 桌宠")
                 .menu(&menu)
                 .show_menu_on_left_click(true)
